@@ -298,16 +298,15 @@
         }
 
         function calculateTimeLeft(deadline) {
+            if (!deadline) {
+                return "No deadline specified";
+            }
             const now = current_date;
             const deadlineDate = new Date(deadline);
             if (isNaN(deadlineDate)) {
                 return "No deadline specified";
             }
             const diffMs = deadlineDate - now;
-            if (diffMs <= 0) {
-                return "Deadline passed";
-            }
-
             const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const diffWeeks = Math.floor(diffDays / 7);
