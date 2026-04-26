@@ -244,7 +244,18 @@
 
                 posts.unshift(newPost);
                 render();
-                document.querySelector(".right").innerHTML = emptyStateTemplate;
+                
+                // Open newly created post
+                const firstPost = posts[0];
+                const postDetailHTML = renderPostDetail(firstPost, 0);
+                document.querySelector(".right").innerHTML = postDetailHTML;
+                const firstPostElement = document.querySelector(".post-item");
+                if (firstPostElement) {
+                    document.querySelectorAll(".post-item").forEach(item => {
+                        item.classList.remove("selected-post");
+                    });
+                    firstPostElement.classList.add("selected-post");
+                }
             };
 
         }
