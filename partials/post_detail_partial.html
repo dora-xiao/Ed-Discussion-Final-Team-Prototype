@@ -1,0 +1,81 @@
+<div class="post-detail">
+    <div class="post-header">
+        <div class="post-title-text">{{TITLE}}</div>
+        <div class="post-index">#{{INDEX}}</div>
+    </div>
+    <div class="post-top-row">
+        <div class="post-author-block">
+            <img src="images/anonymous_avatar.png" class="post-avatar">
+            <div class="post-author-info">
+                <div class="post-author-name">
+                    {{AUTHOR}}
+                </div>
+                <div class="post-meta-line">
+                    {{TIME}} in
+                    <span class="post-category {{CATEGORY_CLASS}}">
+                        {{CATEGORY}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <img src="images/star_watch_views.png" class="post-watch-icon">
+    </div>
+
+    <div class="post-content-row">
+        <div class="post-heart">
+            <img src="images/heart.png">
+        </div>
+        <div class="post-body">
+            <div class="post-text">
+                {{BODY}}
+            </div>
+            <div class="post-actions">
+                <span>Comment</span>
+                <span style="font-size:18px;">⋯</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="urgent-box {{urgentClass}}">
+        <div class="urgent-header">
+            <img class="urgent-icon" src="images/{{urgent_icon_path}}.png" alt="Icon">
+            <p class="{{urgent_text_class}}">Urgent Response Requested</p>
+        </div>
+        <p><strong>Status: </strong> {{urgent_status}}</p>
+        <p><strong>Reason:</strong> {{urgent.reason}}</p>
+        <p><strong>Response Needed By:</strong> {{urgent.deadline}} ({{time_left}})</p>
+    </div>
+
+    <!-- Answer sample -->
+    <div class="{{post-answer}}">
+        <p style="font-size: 22px; color: #222222">1 Answer</p>
+        <div class="post-top-row">
+            <div class="post-author-block">
+                <img src="images/anonymous_avatar.png" class="post-avatar">
+                <div class="post-author-info">
+                    <div class="post-author-name">
+                        Anonymous TA
+                    </div>
+                    <div class="post-meta-line">
+                        {{TIME}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="post-content-row">
+            <div class="post-heart">
+                <img src="images/heart.png">
+            </div>
+            <div class="post-body">
+                <div class="post-text">
+                    Please see section 2 of the syllabus for more details
+                </div>
+                <div class="post-actions">
+                    <span>Comment</span>
+                    <span style="font-size:18px;">⋯</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

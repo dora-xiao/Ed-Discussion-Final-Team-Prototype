@@ -1,0 +1,121 @@
+<div class="new-thread-container">
+    <div class="new-thread-header">
+        <div id="cancelBtn" class="new-thread-cancel">Cancel</div>
+        <div class="new-thread-title">New Question</div>
+        <div id="postBtn" class="new-thread-post">Post</div>
+    </div>
+
+    <div class="new-thread-body">
+        <img src="images/question_or_post.png" alt="Question" class="question-image" />
+        <input id="threadTitle" class="thread-input" placeholder="Title" />
+        <img src="images/similar_threads.png" alt="Similar Threads" class="similar-threads-image" />
+        <select id="threadCategory" class="thread-select">
+            <option>Class Discussion</option>
+            <option>Homework</option>
+            <option>Exam</option>
+            <option>Lectures</option>
+        </select>
+        <textarea id="threadBody" class="thread-textarea" placeholder=""></textarea>
+
+        <!-- Table Layout for Checkboxes -->
+        <table class="checkbox-table">
+            <tr>
+                <td class="checkbox-cell">
+                    <input type="checkbox" id="private" class="checkbox" />
+                </td>
+                <td class="checkbox-label-cell">
+                    <label for="private" class="checkbox-label">Private</label>
+                </td>
+                <td class="checkbox-cell">
+                    <input type="checkbox" id="anonymous" class="checkbox" />
+                </td>
+                <td class="checkbox-label-cell">
+                    <label for="anonymous" class="checkbox-label">Anonymous</label>
+                </td>
+                <td class="checkbox-cell">
+                    <input type="checkbox" id="urgent" class="checkbox" />
+                </td>
+                <td class="checkbox-label-cell">
+                    <label for="urgent" class="checkbox-label">Flag as Urgent</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="checkbox-cell"></td>
+                <td class="tooltip-cell">
+                    <div class="tooltip">Visible to you and staff only</div>
+                </td>
+                <td class="checkbox-cell"></td>
+                <td class="tooltip-cell">
+                    <div class="tooltip">Hide your name from students</div>
+                </td>
+                <td class="checkbox-cell"></td>
+                <td class="tooltip-cell">
+                    <div class="tooltip">Fill out the urgent request form that will appear below</div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Urgent Request Form -->
+        <div class="divider"></div>
+        <div id="urgent-form-id" class="urgent-post-form">
+            <div class="urgent-post-header">Request Urgent Staff Attention</div>
+            <div class="urgent-post-description">
+                Use this only for emergency situations, such as issues affecting an upcoming deadline, exam, submission
+                access, or other urgent situations. Appropriateness of urgent requests will be reviewed by course staff when resolving the post.
+            </div>
+            <div class="urgent-post-tooltip">You have {{urgent_balance}} urgent requests remaining.</div>
+            <div class="urgent-post-box-container">
+                <!-- Valid Usage -->
+                <div class="urgent-post-box urgent-post-valid-usage">
+                    <div class="urgent-post-box-header">
+                        <img src="images/checkmark.png" alt="Valid Usage" class="urgent-post-box-icon" />
+                        Valid Usage
+                    </div>
+                    <div class="urgent-post-box-content">
+                        <p>Valid urgent use does not deduct one request from your balance.</p>
+                        <p>Examples of urgent use:</p>
+                        <ul>
+                            <li>Placeholder example 1</li>
+                            <li>Placeholder example 2</li>
+                            <li>Placeholder example 3</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Invalid Usage -->
+                <div class="urgent-post-box urgent-post-invalid-usage">
+                    <div class="urgent-post-box-header">
+                        <img src="images/cross.png" alt="Invalid Usage" class="urgent-post-box-icon" />
+                        Invalid Usage
+                    </div>
+                    <div class="urgent-post-box-content">
+                        <p>Invalid use will deduct 1 request from your balance.</p>
+                        <p>Examples of non-urgent use:</p>
+                        <ul>
+                            <li>Placeholder example 1</li>
+                            <li>Placeholder example 2</li>
+                            <li>Placeholder example 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Urgent Details -->
+            <div class="urgent-post-question">
+                <label for="urgent-reason">Why is this urgent?</label>
+                <textarea id="urgent-reason" class="urgent-post-textarea" placeholder=""></textarea>
+            </div>
+
+            <div class="urgent-post-response-needed">
+                <label for="response-needed-by">Response needed by (optional)</label>
+                <input type="date" id="response-needed-by" class="urgent-post-date-picker" />
+            </div>
+
+            
+        </div>
+        <!-- Post Button -->
+        <div id="form-warning" class="form-warning" style="display:none;"></div>
+        <div id="post-form-button" class="urgent-post-button">
+            <img src="images/post_button.png" alt="Post" />
+        </div>
+    </div>
+</div>

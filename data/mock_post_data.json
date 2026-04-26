@@ -1,0 +1,110 @@
+[
+    {
+        "author": "John Smith",
+        "private": false,
+        "anonymous": false,
+        "timestamp": "2026-04-24T15:30:00Z",
+        "category": "Team Project",
+        "title": "Final Project Submission Question",
+        "body": "I am having trouble finding instructions about how to submit my final project on the portal. Does anyone know if we need to submit a PDF or the original files?",
+        "urgent": {
+            "reason": "The project deadline is soon and we need to submit.",
+            "deadline": "2026-04-28T00:00:00Z",
+            "resolved": false
+        }
+    },
+    {
+        "author": "Jane Smith",
+        "private": false,
+        "anonymous": false,
+        "timestamp": "2026-04-22T12:00:00Z",
+        "category": "Class Discussion",
+        "title": "Confused about lecture 10",
+        "body": "Could someone please give a simple example of the concepts in lecture 10?",
+        "urgent": null
+    },
+    {
+        "author": "Alice Smith",
+        "private": false,
+        "anonymous": false,
+        "timestamp": "2026-04-20T18:45:00Z",
+        "category": "Exam",
+        "title": "Final exam",
+        "body": "The final exam is not open yet, but it is due soon. There seems to be a Canvas error.",
+        "urgent": {
+            "reason": "This is urgent because the exam is due soon.",
+            "deadline": "2026-04-26T00:00:00Z",
+            "resolved": true
+        }
+    },
+    {
+        "author": "Bob Smith",
+        "private": false,
+        "anonymous": false,
+        "timestamp": "2026-04-18T09:20:00Z",
+        "category": "Class Discussion",
+        "title": "Anyone want to join a study group?",
+        "body": "Is anyone interested in forming a study group to go over lecture 8 material? I think it would help to review together before the quiz.",
+        "urgent": null
+    },
+    {
+        "author": "Mary Smith",
+        "private": false,
+        "anonymous": false,
+        "timestamp": "2026-04-16T22:10:00Z",
+        "category": "Homework",
+        "title": "Question about Homework 4",
+        "body": "Could someone explain what question 3 is asking for?",
+        "urgent": null
+    },
+    {
+        "author": "Michael Smith",
+        "private": false,
+        "anonymous": true,
+        "timestamp": "2026-04-14T07:50:00Z",
+        "category": "Class Discussion",
+        "title": "Suggestion for discussion topics",
+        "body": "I am interested in the current events related to HCI. I propose that we suggest some discussion topics.",
+        "urgent": null
+    },
+    {
+        "author": "Emma Smith",
+        "private": false,
+        "anonymous": false,
+        "timestamp": "2026-04-12T14:15:00Z",
+        "category": "Class Discussion",
+        "title": "Lecture script missing",
+        "body": "I noticed that the lecture script for 3.6 is missing from the Canvas page. Anyone else encountering this?",
+        "urgent": null
+    },
+    {
+        "author": "David Smith",
+        "private": false,
+        "anonymous": false,
+        "timestamp": "2026-04-10T19:05:00Z",
+        "category": "Quiz",
+        "title": "Honorlock issues",
+        "body": "I am experiencing issues connecting to Honorlock again.",
+        "urgent": null
+    },
+    {
+        "author": "Sophia Smith",
+        "private": false,
+        "anonymous": false,
+        "timestamp": "2026-04-08T08:40:00Z",
+        "category": "Homework",
+        "title": "Question about Homework 4",
+        "body": "Can we use our own examples for question 1?",
+        "urgent": null
+    },
+    {
+        "author": "Jon Smith",
+        "private": false,
+        "anonymous": true,
+        "timestamp": "2026-04-04T16:30:00Z",
+        "category": "Individual Project",
+        "title": "Question about Surveys",
+        "body": "How do we format survey results in the appendix?",
+        "urgent": null
+    }
+]

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ed Discussion Final Prototype</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-left">CS6750 - Ed Discussion</div>
+        <div class="profile-icon">
+            <img src="images/avatar.png">
+        </div>
+    </header>
+
+    <div class="main-content">
+
+        <div class="left">
+            <button class="new-thread-btn" onclick="openNewThread()"></button>
+
+            <div class="courses-header">COURSES</div>
+            <div class="course-item selected">CS6750</div>
+
+            <div class="divider"></div>
+
+            <div class="categories-header">CATEGORIES</div>
+
+            <div class="category-item class-discussion">
+                <div class="category-square"></div>Class Discussion
+            </div>
+            <div class="category-item announcements">
+                <div class="category-square"></div>Announcements
+            </div>
+            <div class="category-item lectures">
+                <div class="category-square"></div>Lectures
+            </div>
+            <div class="category-item homework">
+                <div class="category-square"></div>Homework
+            </div>
+            <div class="category-item exam">
+                <div class="category-square"></div>Exam
+            </div>
+            <div class="category-item quiz">
+                <div class="category-square"></div>Quiz
+            </div>
+            <div class="category-item individual-project">
+                <div class="category-square"></div>Individual Project
+            </div>
+            <div class="category-item team-project">
+                <div class="category-square"></div>Team Project
+            </div>
+            <div class="category-item participant-recruitment">
+                <div class="category-square"></div>Participant Recruitment
+            </div>
+            <div class="category-item articles">
+                <div class="category-square"></div>Articles
+            </div>
+            <div class="category-item feedback-box">
+                <div class="category-square"></div>Feedback Box
+            </div>
+        </div>
+
+        <div class="middle">
+
+            <div class="search-bar">
+                <input class="search-input" placeholder="🔍  Search" disabled>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="filter-bar">
+                <div class="filter-text">Filter ▼</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="post-list" id="postList"></div>
+
+        </div>
+
+        <div class="right">
+            <div class="empty-state">
+                <img class="empty-image" src="images/select_a_thread.png">
+            </div>
+        </div>
+
+    </div>
+    <script>
+        let posts = [];
+        let nextPostId = 1;
+        let newThreadTemplate = "";
+        let emptyStateTemplate = "";
+        var current_date = new Date(2026, 3, 25)
+        var urgent_balance = 3;
+
+        window.onload = () => {
+            fetch("partials/new_thread_partial.html")
+                .then(r => r.text())
+                .then(t => newThreadTemplate = t);
+
+            fetch("partials/post_detail_partial.html")
+                .then(r => r.text())
+                .then(t => postTemplate = t);
+
+            fetch("partials/empty_state_partial.html")
+                .then(r => r.text())
+                .then(t => emptyStateTemplate = t);
+
+            fetch("data/mock_post_data.json")
+                .then(r => r.json())
+                .then(d => {
+                    posts = d.map((post, index) => ({
+                        ...post,
+                        id: nextPostId++
+                    }));
+                    render();
+                });
+        };
+
+        function openNewThread() {
+            if (!newThreadTemplate) return;
+
+            newThreadTemplate = newThreadTemplate.replaceAll("{{urgent_balance}}", urgent_balance);
+
+            document.querySelectorAll(".post-item").forEach(item => {
+                item.classList.remove("selected-post");
+            });
+
+            document.querySelector(".right").innerHTML = newThreadTemplate;
+
+            const postBtn = document.getElementById("postBtn");
+            const cancelBtn = document.getElementById("cancelBtn");
+
+            postBtn.onclick = () => {
+                const title = document.getElementById("threadTitle").value;
+                const body = document.getElementById("threadBody").value;
+                const category = document.getElementById("threadCategory").value;
+
+                if (!title || !body) return;
+
+                posts.unshift({
+                    title,
+                    body,
+                    category,
+                    author: "You",
+                    anonymous: false,
+                    timestamp: current_date
+                });
+
+                render();
+
+                document.querySelector(".right").innerHTML = emptyStateTemplate;
+            };
+
+            cancelBtn.onclick = () => {
+                document.querySelector(".right").innerHTML = emptyStateTemplate;
+            };
+
+            const privateCheckbox = document.getElementById('private');
+            const anonymousCheckbox = document.getElementById('anonymous');
+
+            privateCheckbox.addEventListener('change', () => {
+                if (privateCheckbox.checked) {
+                    anonymousCheckbox.disabled = true;
+                    anonymousCheckbox.checked = false;
+                } else {
+                    anonymousCheckbox.disabled = false;
+                }
+            });
+
+            // Handler for the anonymous checkbox change
+            anonymousCheckbox.addEventListener('change', () => {
+                if (anonymousCheckbox.checked) {
+                    privateCheckbox.disabled = true;
+                    privateCheckbox.parentNode.style.color = "grey";
+                    privateCheckbox.checked = false;
+                } else {
+                    privateCheckbox.disabled = false;
+                    privateCheckbox.parentNode.style.color = "black";
+                }
+            });
+
+            // Urgent box
+            const urgent_checkbox = document.getElementById("urgent");
+            const urgent_form = document.getElementById("urgent-form-id");
+            urgent_checkbox.addEventListener('change', () => {
+                if (urgent_checkbox.checked) {
+                    urgent_form.className = "urgent-form-opened";
+                } else {
+                    urgent_form.className = "urgent-form-closed";
+                }
+            });
+
+            // Submitting the new post
+            const postFormButton = document.getElementById("post-form-button");
+            postFormButton.onclick = () => {
+                const title = document.getElementById("threadTitle").value.trim();
+                const body = document.getElementById("threadBody").value.trim();
+                const category = document.getElementById("threadCategory").value;
+
+                const urgentCheckbox = document.getElementById("urgent");
+                const isUrgent = urgentCheckbox.checked;
+                const urgentReason = document.getElementById("urgent-reason").value.trim();
+
+                const warningBox = document.getElementById("form-warning");
+
+                let missingFields = [];
+
+                if (!title) missingFields.push("Title");
+                if (!body) missingFields.push("Post content");
+                if (isUrgent && !urgentReason) {
+                    missingFields.push("Why is this urgent");
+                }
+                if (missingFields.length > 0) {
+                    warningBox.style.display = "block";
+                    warningBox.innerText = `Please fill out the following required field${missingFields.length > 1 ? "s" : ""}: ${missingFields.join(", ")}`;
+                    return;
+                }
+
+                warningBox.style.display = "none";
+                warningBox.innerText = "";
+
+                const urgent = isUrgent ? {
+                    reason: urgentReason,
+                    deadline: document.getElementById("response-needed-by").value,
+                    resolved: false
+                } : null;
+
+                const newPost = {
+                    id: nextPostId++,
+                    author: "Me",
+                    private: document.getElementById("private").checked,
+                    anonymous: document.getElementById("anonymous").checked,
+                    timestamp: current_date.toISOString(),
+                    category,
+                    title,
+                    body,
+                    urgent,
+                };
+
+                posts.unshift(newPost);
+                render();
+                document.querySelector(".right").innerHTML = emptyStateTemplate;
+            };
+
+        }
+
+        function formatTime(ts) {
+            const d = Math.floor((new Date() - new Date(ts)) / (1000 * 60 * 60 * 24));
+            if (d >= 30) return Math.floor(d / 30) + "mth";
+            if (d >= 7) return Math.floor(d / 7) + "w";
+            return d + "d";
+        }
+
+        function formatFullTime(ts) {
+            const now = current_date;
+            const t = new Date(ts);
+            const diff = now - t;
+
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(hours / 24);
+            const weeks = Math.floor(days / 7);
+            const months = Math.floor(days / 30);
+
+            if (months) return `${months} month${months > 1 ? "s" : ""} ago`;
+            if (weeks) return `${weeks} week${weeks > 1 ? "s" : ""} ago`;
+            if (days) return `${days} day${days > 1 ? "s" : ""} ago`;
+            return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+        }
+
+        function formatDateToReadableString(deadline) {
+            const date = new Date(deadline);
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            };
+            return date.toLocaleString('en-US', options);
+        }
+
+        function calculateTimeLeft(deadline) {
+            const now = current_date;
+            const deadlineDate = new Date(deadline);
+            if (isNaN(deadlineDate)) {
+                return "No deadline specified";
+            }
+            const diffMs = deadlineDate - now;
+            if (diffMs <= 0) {
+                return "Deadline passed";
+            }
+
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const diffWeeks = Math.floor(diffDays / 7);
+            const diffMonths = Math.floor(diffDays / 30);
+
+            if (diffMonths >= 1) {
+                return `${diffMonths} month${diffMonths > 1 ? "s" : ""}`;
+            } else if (diffWeeks >= 1) {
+                return `${diffWeeks} week${diffWeeks > 1 ? "s" : ""}`;
+            } else if (diffDays >= 1) {
+                return `${diffDays} day${diffDays > 1 ? "s" : ""}`;
+            } else if (diffHours >= 1) {
+                return `${diffHours} hour${diffHours > 1 ? "s" : ""}`;
+            } else {
+                return "less than an hour";
+            }
+        }
+
+        function cls(cat) {
+            return cat.toLowerCase().replaceAll(" ", "-");
+        }
+
+        function renderPostDetail(p, idx) {
+            if (!postTemplate) return "";
+
+            let urgentClass = p.urgent ? "show-urgent" : "";
+            let timeLeft = p.urgent ? calculateTimeLeft(p.urgent.deadline) : "";
+            let deadline_string = p.urgent && p.urgent.deadline ? formatDateToReadableString(p.urgent.deadline) : "";
+            let urgent_icon_path = p.urgent && p.urgent.resolved ? "checkmark" : "warning";
+            let urgent_text_class = p.urgent && p.urgent.resolved ? "urgent-text-resolved" : "urgent-text";
+            let urgent_status = p.urgent && p.urgent.resolved ? "Resolved" : "Pending Review";
+            let post_answer = p.urgent && p.urgent.resolved ? "post-answer-resolved" : "post-answer";
+
+            return postTemplate
+                .replaceAll("{{TITLE}}", p.title)
+                .replaceAll("{{INDEX}}", p.id)
+                .replaceAll("{{AUTHOR}}", p.anonymous ? "Anonymous Pigeon" : p.author)
+                .replaceAll("{{TIME}}", formatFullTime(p.timestamp))
+                .replaceAll("{{CATEGORY}}", p.category)
+                .replaceAll("{{CATEGORY_CLASS}}", cls(p.category))
+                .replaceAll("{{BODY}}", p.body)
+                .replaceAll("{{urgent.reason}}", p.urgent ? p.urgent.reason : "")
+                .replaceAll("{{urgent.deadline}}", deadline_string)
+                .replaceAll("{{time_left}}", timeLeft)
+                .replaceAll("{{urgentClass}}", urgentClass)
+                .replaceAll("{{urgent_icon_path}}", urgent_icon_path)
+                .replaceAll("{{urgent_text_class}}", urgent_text_class)
+                .replaceAll("{{urgent_status}}", urgent_status)
+                .replaceAll("{{post-answer}}", post_answer)
+        }
+
+        function render() {
+            const el = document.getElementById("postList");
+            el.innerHTML = "";
+
+            posts.forEach((p, i) => {
+                const div = document.createElement("div");
+                div.className = "post-item";
+
+                div.onclick = () => {
+                    document.querySelectorAll(".post-item").forEach(item => {
+                        item.classList.remove("selected-post");
+                    });
+
+                    div.classList.add("selected-post");
+
+                    const postDetailHTML = renderPostDetail(p, i);
+                    const rightPanel = document.querySelector(".right");
+
+                    if (rightPanel) {
+                        rightPanel.innerHTML = postDetailHTML;
+                    }
+                };
+                var question_symbol = "";
+                if (p.urgent) {
+                    if (p.urgent.resolved) {
+                        question_symbol = "checkmark";
+                    } else {
+                        question_symbol = "warning";
+                    }
+                } else {
+                    question_symbol = "post_type_question";
+                }
+                div.innerHTML = `
+                <div class="post-title-row">
+                    <img class="post-icon" src="images/${question_symbol}.png">
+                    <div class="post-title">${p.title}</div>
+                </div>
+                <div class="post-meta">
+                    <span class="post-category ${cls(p.category)}">${p.category}</span>
+                    <span>${p.anonymous ? "Anonymous Pigeon" : p.author}</span>
+                    <span>${formatTime(p.timestamp)}</span>
+                </div>
+                `;
+
+                el.appendChild(div);
+
+                if (i !== posts.length - 1) {
+                    const d = document.createElement("div");
+                    d.className = "divider";
+                    el.appendChild(d);
+                }
+            });
+
+            if (posts.length === 0 || !document.querySelector(".selected-post")) {
+                document.querySelector(".right").innerHTML = emptyStateTemplate;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
