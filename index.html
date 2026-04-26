@@ -148,7 +148,7 @@
                     category,
                     author: "You",
                     anonymous: false,
-                    timestamp: current_date
+                    timestamp: current_date.getTime(),
                 });
 
                 render();
@@ -224,9 +224,11 @@
                 warningBox.style.display = "none";
                 warningBox.innerText = "";
 
+                const deadlineRaw = document.getElementById("response-needed-by").value;
+
                 const urgent = isUrgent ? {
                     reason: urgentReason,
-                    deadline: document.getElementById("response-needed-by").value,
+                    deadline: deadlineRaw ? new Date(deadlineRaw + "T00:00:00").getTime() : null,
                     resolved: false
                 } : null;
 
@@ -235,7 +237,7 @@
                     author: "Me",
                     private: document.getElementById("private").checked,
                     anonymous: document.getElementById("anonymous").checked,
-                    timestamp: current_date.toISOString(),
+                    timestamp: current_date.getTime(),
                     category,
                     title,
                     body,
@@ -268,7 +270,7 @@
         }
 
         function formatFullTime(ts) {
-            const now = current_date;
+            const now = current_date.getTime();
             const t = new Date(ts);
             const diff = now - t;
 
